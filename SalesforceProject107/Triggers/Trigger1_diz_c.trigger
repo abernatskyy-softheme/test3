@@ -1,0 +1,1 @@
+trigger Trigger1_diz_c on Account (after update)  { }

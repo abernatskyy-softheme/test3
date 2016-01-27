@@ -1,0 +1,1 @@
+public class diz1_prod_class2_C { }

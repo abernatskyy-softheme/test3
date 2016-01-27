@@ -1,0 +1,1 @@
+public class c1_diz_c { }

@@ -1,0 +1,57 @@
+<apex:page controller="UpdateOpportunityPricingTierController" showHeader="true" sidebar="true" tabStyle="Opportunity" id="myPage">
+<apex:sectionHeader title="" subtitle="Choose Price Book for {!opp.Name}">
+
+<script language="javascript">
+    var preSelectedPricebookId = '{!JSENCODE(selectedPricebookId)}';
+    
+    function preSubmit() { 
+        var hasProducts = '{!JSENCODE(HasExistingProducts)}';
+        if (hasProducts == 'Yes') {
+            var postSelectedPricebookId = document.getElementById('myPage:myForm:myBlock:mySection:mySecItem:pb').value;
+            //alert(postSelectedPricebookId);
+            if (preSelectedPricebookId != postSelectedPricebookId) {
+                var ans = confirm('By changing the pricebook, you are trying to delete all existing products from this opportunity. Do you want to continue?');
+                return ans;
+            }
+            else {
+                return true;
+                }   
+        }
+        else {
+            return true;
+        }
+    }
+</script>
+    <apex:pageMessages />   
+
+    <apex:form id="myForm"> 
+    Select a price book for this opportunity. You can add products only from a single price book. Changing a selected price book will delete all existing products from this opportunity.
+    <br/><br/>
+    
+    <apex:pageBlock title="Choose Price Book for {!opp.Name}" id="myBlock">    
+        <apex:pageBlockButtons location="bottom">
+            <apex:commandButton value="Save" action="{!updatePricebook}" onClick="javascript:return preSubmit()"/>
+            <apex:commandButton value="Cancel" action="{!cancel}"/>
+        </apex:pageBlockButtons>         
+
+        <apex:pageBlockSection columns="1" id="mySection">
+            
+            <apex:pageBlockSectionItem id="mySecItem">
+                <apex:outputLabel value="Opportunity Price Book"/>
+                <apex:selectList value="{!selectedPricebookId}" multiselect="false" size="1" id="pb">
+                    <apex:selectOptions value="{!pricebookOptions}"/>
+                </apex:selectList>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Also Apply to Account"/>
+                <apex:inputCheckbox value="{!applyToAccount}"/>      
+            </apex:pageBlockSectionItem>
+
+        </apex:pageBlockSection>
+         
+    </apex:pageBlock>
+    </apex:form>
+    
+</apex:sectionHeader>
+</apex:page>
